@@ -21,8 +21,8 @@ if __name__ == '__main__':
         help='File containing the foot part of wrapping C code')
     parser.add_argument('asmfile',
         help='Assembly source code file')
-    parser.add_argument('srcfile',
-        help='Resulting C source code file')
+    # parser.add_argument('srcfile',
+    #     help='Resulting C source code file')
     parser.add_argument('binfile',
         help='Resulting binary file')
 
@@ -33,17 +33,19 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    srcfile = args.asmfile.replace('.s', '.c')
+
     asm_wrapper_argv = ASM_WRAPPER_ARGV
     asm_wrapper_argv = asm_wrapper_argv.replace('<headfile>', args.headfile)
     asm_wrapper_argv = asm_wrapper_argv.replace('<footfile>', args.footfile)
     asm_wrapper_argv = asm_wrapper_argv.replace('<asmfile>', args.asmfile)
-    asm_wrapper_argv = asm_wrapper_argv.replace('<srcfile>', args.srcfile)
+    asm_wrapper_argv = asm_wrapper_argv.replace('<srcfile>', srcfile)
     if args.debug:
         asm_wrapper_argv += ' -d '
     asm_wrapper_argv = ASM_WRAPPER + ' ' + asm_wrapper_argv
 
     compiler_argv = args.compiler_argv
-    compiler_argv = compiler_argv.replace('<srcfile>', args.srcfile)
+    compiler_argv = compiler_argv.replace('<srcfile>', srcfile)
     compiler_argv = compiler_argv.replace('<asmfile>', args.asmfile)
     compiler_argv = compiler_argv.replace('<binfile>', args.binfile)
     compiler_argv = args.compiler + ' ' + compiler_argv
