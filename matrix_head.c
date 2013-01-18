@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define N 3
 
@@ -6,9 +7,9 @@ int main(int argc, char* argv[]) {
 	int i;
 
     int *a, *b, *c;
-    a = (int *) malloc(sizeof(int)*N*N)
-    b = (int *) malloc(sizeof(int)*N*N)
-    c = (int *) malloc(sizeof(int)*N*N)
+    a = (int *) malloc(sizeof(int)*N*N);
+    b = (int *) malloc(sizeof(int)*N*N);
+    c = (int *) malloc(sizeof(int)*N*N);
 
     for (i=0; i < N*N; ++i) {
     	scanf("%d", a[i]);
