@@ -12,10 +12,10 @@ int main(int argc, char* argv[]) {
     c = (int *) malloc(sizeof(int)*N*N);
 
     for (i=0; i < N*N; ++i) {
-    	scanf("%d", a[i]);
+    	scanf("%d", &a[i]);
     }
     for (i=0; i < N*N; ++i) {
-    	scanf("%d", b[i]);
+    	scanf("%d", &b[i]);
     }
 
     __asm__(
