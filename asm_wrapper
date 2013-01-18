@@ -1,0 +1,44 @@
+#!/usr/bin/env python2
+import sys
+import argparse
+
+
+ASMFILE_PLACEHOLDER = '>>>\n>>> ASMFILE <<<\n>>>\n'
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Wrap plain assembly code with C code')
+
+    parser.add_argument('-d', '--debug', action='store_true')
+
+    parser.add_argument('headfile',
+        help='File containing the head part of wrapping C code')
+    parser.add_argument('footfile',
+        help='File containing the foot part of wrapping C code')
+    parser.add_argument('asmfile',
+        help='Assembly source code file')
+    parser.add_argument('srcfile',
+        help='Resulting C source code file')
+
+    args = parser.parse_args()
+
+    if args.debug:
+        with open(args.headfile) as headfile:
+            print headfile.read(),
+        print ASMFILE_PLACEHOLDER,
+        with open(args.footfile) as footfile:
+            print footfile.read(),
+    else:
+        with open(args.srcfile, 'w') as srcfile:
+            with open(args.headfile) as headfile:
+                srcfile.write(headfile.read())
+            with open(args.asmfile) as asmfile:
+                for line in asmfile:
+                    line = line.strip('\n').strip('\r')
+                    if line:
+                        srcfile.write('"%s\\n"\n' % line)
+            with open(args.footfile) as footfile:
+                srcfile.write(footfile.read())
+
+    sys.exit()

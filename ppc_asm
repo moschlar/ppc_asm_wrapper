@@ -1,0 +1,63 @@
+#!/usr/bin/env python2
+import sys, os
+import argparse
+import shlex
+import subprocess
+
+
+ASM_WRAPPER = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'asm_wrapper')
+ASM_WRAPPER_ARGV = '<headfile> <footfile> <asmfile> <srcfile>'
+
+
+if __name__ == '__main__':
+
+    parser = argparse.ArgumentParser(description='Wrap and compile PowerPC 601 assembly code')
+
+    parser.add_argument('-d', '--debug', action='store_true')
+
+    parser.add_argument('headfile',
+        help='File containing the head part of wrapping C code')
+    parser.add_argument('footfile',
+        help='File containing the foot part of wrapping C code')
+    parser.add_argument('asmfile',
+        help='Assembly source code file')
+    parser.add_argument('srcfile',
+        help='Resulting C source code file')
+    parser.add_argument('binfile',
+        help='Resulting binary file')
+
+    parser.add_argument('compiler',
+        help='C compiler')
+    parser.add_argument('compiler_argv',
+        help='Arguments for the C compiler. Available placeholders: <srcfile> <asmfile> <binfile>.')
+
+    args = parser.parse_args()
+
+    asm_wrapper_argv = ASM_WRAPPER_ARGV
+    asm_wrapper_argv = asm_wrapper_argv.replace('<headfile>', args.headfile)
+    asm_wrapper_argv = asm_wrapper_argv.replace('<footfile>', args.footfile)
+    asm_wrapper_argv = asm_wrapper_argv.replace('<asmfile>', args.asmfile)
+    asm_wrapper_argv = asm_wrapper_argv.replace('<srcfile>', args.srcfile)
+    if args.debug:
+        asm_wrapper_argv += ' -d '
+    asm_wrapper_argv = ASM_WRAPPER + ' ' + asm_wrapper_argv
+
+    compiler_argv = args.compiler_argv
+    compiler_argv = compiler_argv.replace('<srcfile>', args.srcfile)
+    compiler_argv = compiler_argv.replace('<asmfile>', args.asmfile)
+    compiler_argv = compiler_argv.replace('<binfile>', args.binfile)
+    compiler_argv = args.compiler + ' ' + compiler_argv
+
+    if args.debug:
+        print asm_wrapper_argv
+    subprocess.Popen(shlex.split(asm_wrapper_argv),
+        stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr).wait()
+
+    if args.debug:
+        print compiler_argv
+        ret = 0
+    else:
+        ret = subprocess.Popen(shlex.split(compiler_argv),
+            stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr).wait()
+
+    sys.exit(ret)
