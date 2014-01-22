@@ -1,6 +1,6 @@
-"mr %0, %%r3\n" // Copy %%r3 into (a)
-        : "+r" (a)
-        : "r" (b)
+"mr %[a], %%r3\n" // Copy %%r3 into (a)
+        : [a] "+r" (a)
+        : [b] "r" (b)
         );
     printf("%d\n", a);
     return 0;

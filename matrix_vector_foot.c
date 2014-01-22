@@ -3,7 +3,7 @@
         : "cc", "memory", "r3", "r4", "r5", "r6", "r7", "r8", "r9" // clobber list
     );
 
-    for (i=0; i < N*N; ++i) {
+    for (i=0; i < N; ++i) {
         printf("%lf\n", c[i]);
     }
     return 0;

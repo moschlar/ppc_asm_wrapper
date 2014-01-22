@@ -1,24 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N 3
+#define N 4
 
 int main(int argc, char* argv[]) {
     int i = 0;
 
     double *a, *b, *c;
     a = (double *) malloc(sizeof(double)*N*N);
-    b = (double *) malloc(sizeof(double)*N*N);
-    c = (double *) malloc(sizeof(double)*N*N);
+    b = (double *) malloc(sizeof(double)*N);
+    c = (double *) malloc(sizeof(double)*N);
 
     for (i=0; i < N*N; ++i) {
         scanf("%lf", &a[i]);
     }
-    for (i=0; i < N*N; ++i) {
+    for (i=0; i < N; ++i) {
         scanf("%lf", &b[i]);
-    }
-    for (i=0; i < N*N; ++i) {
-        c[i] = 0.0;
     }
 
     __asm__ __volatile__(
